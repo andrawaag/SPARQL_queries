@@ -1,0 +1,20 @@
+# Endpoint: https://query.wikidata.org/ or https://query.wikidata.org/sparql
+# Description: This query gets all wikidata items on human genes that were edited this week.
+# Author: Andra Waagmeester
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX schema: <http://schema.org/>
+
+SELECT DISTINCT ?item ?ncbi_gene ?date_modified
+WHERE
+{
+  ?item wdt:P351 ?ncbi_gene ;
+          wdt:P703 wd:Q15978631 ;
+          schema:dateModified ?date_modified .
+    BIND (now() - ?date_modified as ?date_range)
+    FILTER (?date_range < 8)
+}
