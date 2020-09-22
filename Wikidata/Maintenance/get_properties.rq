@@ -1,6 +1,7 @@
 # Endpoint: https://query.wikidata.org/ or https://query.wikidata.org/sparql
 # Description: This query gets all properties currently in Wikidata, with its english label, its english description
 #               and the affiliated data type.
+# Author: Andra Waagmeester
 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -9,10 +10,10 @@ PREFIX wikibase: <http://wikiba.se/ontology#>
 PREFIX schema: <http://schema.org/>
 
 SELECT DISTINCT
-    ?property
-    ?propertyLabel
-    ?propertyDescription
-    ?propType
+    ?property             # the uri of the property
+    ?propertyLabel        # its label
+    ?propertyDescription  # its description
+    ?propType             # its wikibase data type
 WHERE {
    ?property wikibase:directClaim ?p ;
              wikibase:propertyType ?propType ;
