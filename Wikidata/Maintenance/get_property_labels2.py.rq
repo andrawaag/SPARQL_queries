@@ -1,0 +1,21 @@
+    # Endpoint: https://query.wikidata.org/ or https://query.wikidata.org/sparql
+    # Description: This query gets all English labels both main and altLabels for all properties currently in Wikidata, with its english label, its english description
+    #               and the affiliated data type.
+    # Author: Andra Waagmeester
+
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    PREFIX wikibase: <http://wikiba.se/ontology#>
+    PREFIX schema: <http://schema.org/>
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+    SELECT DISTINCT
+        ?property
+        ?propertyLabel
+        ?propertyAltLabel
+        ?propertyDescription
+    WHERE {
+    ?property a wikibase:Property .
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+    }

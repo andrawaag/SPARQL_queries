@@ -1,0 +1,18 @@
+# Re: https://twitter.com/Ciell/status/1309422784058142721
+
+#defaultView:Dimensions
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX schema: <http://schema.org/>
+
+SELECT ?language ?article ?autism WHERE {
+   VALUES ?autism {wd:Q38404 wd:Q1436063 }
+  VALUES ?language {"en" "de" "fr" "nl"}
+   ?article schema:about  ?autism ;
+            schema:inLanguage ?language .
+
+}
+

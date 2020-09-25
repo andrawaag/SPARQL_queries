@@ -16,10 +16,10 @@ SELECT DISTINCT
     ?propertyAltLabel
     ?propertyDescription
 WHERE {
-?property wikibase:directClaim ?p ;
-          schema:description ?propertyDescription ;
-          skos:altLabel ?propertyAltLabel ;
-          rdfs:label ?propertyLabel .
+?property wikibase:directClaim ?p .
+?property schema:description ?propertyDescription .
+OPTIONAL {?property skos:altLabel ?propertyAltLabel .}
+?property rdfs:label ?propertyLabel .
 FILTER (lang(?propertyLabel) = "en")
 FILTER (lang(?propertyDescription) = "en")
 FILTER (lang(?propertyAltLabel) = "en")
