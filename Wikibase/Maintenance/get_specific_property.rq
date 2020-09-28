@@ -1,0 +1,19 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX schema: <http://schema.org/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT DISTINCT
+?property
+?propertyType
+?propertyLabel
+?propertyAltLabel
+WHERE {
+  VALUES ?property {<http://wikibase.svc/entity/P7807>}
+  ?property a wikibase:Property ;
+              rdfs:label ?propertyLabel ;
+              wikibase:propertyType ?propertyType .
+  OPTIONAL {?property skos:altLabel ?propertyAltLabel .}
+}

@@ -1,0 +1,25 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX schema: <http://schema.org/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT DISTINCT
+    ?property
+    ?propertyLabel
+    ?propertyAltLabel
+    ?propertyDescription
+    ?wikidata
+WHERE {
+?property wikibase:directClaim ?p .
+?property schema:description ?propertyDescription .
+OPTIONAL {?property skos:altLabel ?propertyAltLabel .}
+?property rdfs:label ?propertyLabel .
+?property wdt:P7803 ?wikidata .
+FILTER (lang(?propertyLabel) = "en")
+FILTER (lang(?propertyDescription) = "en")
+FILTER (lang(?propertyAltLabel) = "en")
+}
+
