@@ -1,0 +1,2 @@
+SELECT DISTINCT ?g WHERE {GRAPH <https://mobidb.org> {?s ?p ?o .}} LIMIT 10
+
