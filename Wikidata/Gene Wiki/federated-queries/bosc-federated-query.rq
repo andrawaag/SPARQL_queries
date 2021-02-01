@@ -1,0 +1,35 @@
+PREFIX wp:      <http://vocabularies.wikipathways.org/wp#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX dc:      <http://purl.org/dc/elements/1.1/>
+PREFIX wdt:     <http://www.wikidata.org/prop/direct/>
+PREFIX wd:      <http://www.wikidata.org/entity/>
+PREFIX ps:      <http://www.wikidata.org/prop/statement/>
+PREFIX pq:      <http://www.wikidata.org/prop/qualifier/>
+PREFIX p:       <http://www.wikidata.org/prop/>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX bd:       <http://www.bigdata.com/rdf#>
+
+SELECT DISTINCT ?gene ?geneLabel ?wd_pathwayLabel ?pathwayTags ?tags where {
+  ?gene wdt:P2293 ?diseaseGA .        # gene has genetic association
+  ?diseaseGA wdt:P279* wd:Q3286546 .  # to a type of respiratory system disease
+  #?gene wdt:P31 wd:Q7187 .     # gene is subclass of "gene"
+
+  ?gene wdt:P688 ?protein .                        # gene encodes a protein
+  ?protein p:P681 ?s .                             # protein's cell component statement
+  ?s ps:P681 ?cp .                               # get statement value
+  FILTER NOT EXISTS {?s pq:P459 wd:Q23190881 .}  # determination method is not IEA
+  # ?cp wdt:P279*|wdt:P361* wd:Q14349455 .         # statement value is 'part of' or 'subclass of' membrane
+
+  ?wd_pathway wdt:P31 wd:Q4915012 ;               # instance of a biological pathway
+             wdt:P2888 ?pwIri ;                     # Mapping to Wikipathways IRI
+             wdt:P527 ?gene .
+  SERVICE <http://sparql.wikipathways.org/sparql> {
+    ?wp_pathway dc:identifier ?pwIri ;
+                wp:ontologyTag ?pathwayTags .
+    ?pathwayTags rdfs:label ?tags .
+  }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+}
+LIMIT 10
+
