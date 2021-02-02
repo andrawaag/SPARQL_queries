@@ -10,12 +10,14 @@ PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX wikibase: <http://wikiba.se/ontology#>
 PREFIX bd:       <http://www.bigdata.com/rdf#>
 
-SELECT DISTINCT ?gene ?geneLabel ?wd_pathwayLabel ?pathwayTags ?tags where {
+SELECT DISTINCT ?gene ?geneLabel ?wd_pathwayLabel ?tneighbour  ?interactionType where {
   ?gene wdt:P2293 ?diseaseGA .        # gene has genetic association
   ?diseaseGA wdt:P279* wd:Q3286546 .  # to a type of respiratory system disease
   #?gene wdt:P31 wd:Q7187 .     # gene is subclass of "gene"
 
-  ?gene wdt:P688 ?protein .                        # gene encodes a protein
+  ?gene wdt:P688 ?protein ; # gene encodes a protein
+        wdt:P2888 ?gene_uri ;
+        wdt:P594 ?ensemblID .
   ?protein p:P681 ?s .                             # protein's cell component statement
   ?s ps:P681 ?cp .                               # get statement value
   FILTER NOT EXISTS {?s pq:P459 wd:Q23190881 .}  # determination method is not IEA
@@ -25,9 +27,13 @@ SELECT DISTINCT ?gene ?geneLabel ?wd_pathwayLabel ?pathwayTags ?tags where {
              wdt:P2888 ?pwIri ;                     # Mapping to Wikipathways IRI
              wdt:P527 ?gene .
   SERVICE <http://sparql.wikipathways.org/sparql> {
-    ?wp_pathway dc:identifier ?pwIri ;
+
+      ?wp_pathway dc:identifier ?pwIri ;
                 wp:ontologyTag ?pathwayTags .
     ?pathwayTags rdfs:label ?tags .
+    ?interaction dcterms:isPartOf ?wp_pathway ;
+                 a wp:Interaction, ?interactionType ;
+                 wp:participants ?gene_uri .
   }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
 }
